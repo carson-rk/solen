@@ -1,65 +1,142 @@
-import Image from "next/image";
+"use client";
+
+import { useState, useEffect} from "react";
+import { UserState } from "@/lib/types";
+import { getNextState } from "@/lib/transitionEngine";
+import { Selection } from "@/lib/selections";
+import { getContent } from "@/lib/content";
+
 
 export default function Home() {
+  const [state, setState] = useState<UserState>("intro");
+  const [stressLevel, setStressLevel] = useState<number | null>(null);
+  const [selection, setSelection] = useState<Selection | null>(null);
+  const selectedContent = getContent(selection);
+
+  function safeParse(value: string) {
+    try {
+      return JSON.parse(value);
+    } catch {
+      return [];
+    }
+  }
+  const [history, setHistory] = useState<
+    { stressLevel: number | null; timestamp: number }[]
+  >(() => {
+    if (typeof window === "undefined") return [];
+
+    const saved = localStorage.getItem("history");
+
+    return saved ? safeParse(saved) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("history", JSON.stringify(history));
+  }, [history]);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+    <main className="flex min-h-screen flex-col items-center justify-center gap-6">
+
+      {state === "intro" && (
+        <>
+          <h1>How are you feeling today?</h1>
+          <button onClick={() => setState("selection")}>
+            Start
+          </button>
+        </>
+      )}
+
+
+      {state === "selection" && (
+        <>
+          <h2>What is bothering you?</h2>
+
+          <button onClick={() => {
+            setSelection("academic");
+            setState("intensity");}}>
+            Academic pressure
+          </button>
+
+          <button onClick={() => {
+            setSelection("financial");
+            setState("intensity");}}>
+            Financial stress
+          </button>
+
+          <button onClick={() => {
+            setSelection("social");
+            setState("intensity");}}>
+            Social issues
+          </button>
+
+          <button onClick={() => {
+            setSelection("family");
+            setState("intensity");}}>
+            Family issues
+          </button>
+        </>
+      )}
+
+      {state === "intensity" && (
+        <>
+          <h2>How intense is it? (0-10)</h2>
+
+          <input
+            type="number"
+            min="0"
+             max="10"
+            onChange={(e) => {
+              const value = e.target.value;setStressLevel(value === "" ? null : Number(value));
+            }}
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+
+            <button onClick={() => {
+              if (stressLevel === null || selection === null) return;
+              const newEntry = {
+                stressLevel,
+                timestamp: Date.now(),
+              };
+              
+              const updatedHistory = [...history, newEntry];
+
+              setHistory(updatedHistory);
+
+              setState(
+                getNextState(state, {
+                  selection,
+                  stressLevel,
+                  history: updatedHistory,
+                })
+              );
+              }}>
+              Continue
+            </button>
+        </>
+      )}
+
+      {state === "content" && (
+        <>
+          <h2>Calm Content</h2>
+          <p>{selectedContent?.text}</p>
+        </>
+      )}
+
+      {state === "peer" && (
+        <>
+          <h2>Peer Support</h2>
+          <p>Talk to someone who understands.</p>
+          <p>{selectedContent?.text}</p>
+        </>
+      )}
+
+      {state === "counselor" && (
+        <>
+          <h2>Professional Support</h2>
+          <p>We recommend professional support.</p>
+          <p>{selectedContent?.text}</p>
+        </>
+      )}
+
+    </main>
   );
 }
