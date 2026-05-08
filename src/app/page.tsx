@@ -8,10 +8,14 @@ import { getContent } from "@/lib/content";
 
 
 export default function Home() {
+
   const [state, setState] = useState<UserState>("intro");
   const [stressLevel, setStressLevel] = useState<number | null>(null);
   const [selection, setSelection] = useState<Selection | null>(null);
-  const selectedContent = getContent(selection);
+  const selectedContent = getContent({
+    selection,
+    stressLevel,
+  });
 
   function safeParse(value: string) {
     try {
