@@ -1,4 +1,5 @@
 import { Selection } from "./selections";
+import { getRecentAverage } from "./historyAnalysis";
 
 export type ContentItem = {
   id: string;
@@ -11,6 +12,10 @@ export type ContentItem = {
 type RecommendationContext = {
   selection: Selection | null;
   stressLevel: number | null;
+  history: {
+    stressLevel: number | null;
+    timestamp: number;
+  }[];
 };
 
 export const content: ContentItem[] = [
@@ -129,18 +134,28 @@ export const content: ContentItem[] = [
 export function getContent({
   selection,
   stressLevel,
+  history,
 }: RecommendationContext) {
   if (!selection || stressLevel === null){
     return null;
   }
 
-  const matching = content.filter((item) => {
+  const recentAverage = getRecentAverage(history);
+
+  let matching = content.filter((item) => {
     return (
       item.tag === selection &&
       stressLevel >= item.minStress &&
       stressLevel <= item.maxStress
     );
   });
+
+  if (matching.length === 0) return null;
+  if (recentAverage > 7) {
+    matching = matching.filter((item) =>
+      item.text.toLowerCase().includes("support")
+    );
+  }
 
   if (matching.length === 0) return null;
 
