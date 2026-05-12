@@ -1,83 +1,7 @@
+import Link from "next/link";
+
 export default function HomePage() {
     return (
-      <>
-        <header>
-          <nav className="content-width flex items-center justify-between py-6 px-2">
-  
-          {/* LOGO */}
-          <div>
-            <p className="text-2xl font-(--font-heading)">AlignWell</p>
-          </div>
-
-          {/* DESKTOP LINKS */}
-          <div className="hidden">
-            <a href="#">Explore</a>
-            <a href="#">Stories</a>
-            <a href="#">Support</a>
-          </div>
-          <div className="flex gap-4 items-center">
-
-          {/* MENU BUTTON */}
-            <button className="flex items-center justify-center text-(--primary)">
-
-              <svg
-                width="40"
-                height="40"
-                viewBox="0 0 100 100"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <rect
-                  width="30"
-                  height="30"
-                  x="10"
-                  y="20"
-                  fill="currentColor"
-                />
-
-                <rect
-                  width="30"
-                  height="30"
-                  x="10"
-                  y="60"
-                  fill="currentColor"
-                />
-
-                <rect
-                  width="10"
-                  height="30"
-                  x="60"
-                  y="20"
-                  fill="currentColor"
-                />
-
-                <rect
-                  width="30"
-                  height="10"
-                  x="50"
-                  y="30"
-                  fill="currentColor"
-                />
-
-                <rect
-                  width="30"
-                  height="30"
-                  x="50"
-                  y="60"
-                  fill="currentColor"
-                />
-              </svg>
-
-            </button>
-
-            {/* SIGN IN BUTTON */}
-            <button className="px-2 py-1 rounded-md bg-(--primary) text-white">
-              Sign In
-            </button>
-          </div>
-
-          </nav>
-        </header>
 
         <main>
         
@@ -92,12 +16,12 @@ export default function HomePage() {
             and find clarity.
           </p>
           <div className="flex gap-4">
-            <button className="px-2.5 py-2.5 rounded-lg bg-(--primary) text-white">
+            <Link className="px-2.5 py-2.5 rounded-lg bg-(--primary) text-white" href="/explore">
             Start Reflection
-            </button>
-            <button className="px-2.5 py-2.5 rounded-lg bg-(--primary) text-white">
+            </Link>
+            <Link className="px-2.5 py-2.5 rounded-lg bg-(--primary) text-white" href="/support">
             How It Works
-            </button>
+            </Link>
           </div>
         </section>
   
@@ -167,9 +91,9 @@ export default function HomePage() {
             Alignwell is a guided support system designed to help students and young people understand where they are emotionally and what kind of support may help them move forward. Through peer connection, guided reflection, anonymous check-ins, curated support content, and counselor referral pathways, the platform helps users navigate difficult seasons with more clarity and less isolation.
             </p>
     
-            <button className="px-2.5 py-2.5 rounded-lg bg-(--primary) text-white">
+            <Link className="px-2.5 py-2.5 rounded-lg bg-(--primary) text-white" href="/support">
               Explore Alignwell
-            </button>
+            </Link>
           </div>
         </section>
   
@@ -216,29 +140,17 @@ export default function HomePage() {
 
           <div className="flex gap-4">
   
-          <button className="px-2.5 py-2.5 rounded-lg bg-(--primary) text-white">
+          <Link className="px-2.5 py-2.5 rounded-lg bg-(--primary) text-white" href="/sign-up">
           Create Free Account
-          </button>
+          </Link>
 
-          <button className="px-2.5 py-2.5 rounded-lg bg-(--primary) text-white">
+          <Link className="px-2.5 py-2.5 rounded-lg bg-(--primary) text-white" href="/explore">
             Learn More
-          </button>
+          </Link>
           </div>
           </div>
         </section>
   
       </main>
-
-      <footer>
-      <section className="section-spacing">
-          <p>
-          Alignwell is a stepped support platform helping students and young people navigate emotional overwhelm, pressure, isolation, and uncertainty with clarity and connection.
-          </p>
-          <p>
-          You are enough — no matter what you are carrying.
-          </p>
-        </section>
-      </footer>
-      </>
     );
   }
