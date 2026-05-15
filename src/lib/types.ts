@@ -1,7 +1,10 @@
 export type UserState =
   | "intro"
-  | "selection"
   | "intensity"
-  | "content"
+  | "checkin"
+  | "selection"
+  | "recommendation"
+  | "journal"
   | "peer"
-  | "counselor";
+  | "mentor"
+  | "chat";

@@ -1,19 +1,18 @@
 import { Selection } from "./selections";
-import { getRecentAverage } from "./historyAnalysis";
 
 export type ContentItem = {
   id: string;
   tag: Selection;
-  minStress: number;
-  maxStress: number;
+  intensity: string;
   text: string;
 };
 
 type RecommendationContext = {
-  selection: Selection | null;
-  stressLevel: number | null;
+  selection: Selection[];
+  intensity: string | null;
+
   history: {
-    stressLevel: number | null;
+    intensity: string | null;
     timestamp: number;
   }[];
 };
@@ -23,8 +22,7 @@ export const content: ContentItem[] = [
   {
     id: "academic-low-1",
     tag: "academic",
-    minStress: 0,
-    maxStress: 3,
+    intensity: "light_rain",
     text: "Break your study session into 25-minute focus blocks.",
   },
 
@@ -32,8 +30,7 @@ export const content: ContentItem[] = [
   {
     id: "academic-mid-1",
     tag: "academic",
-    minStress: 4,
-    maxStress: 7,
+    intensity: "heavy_fog",
     text: "Focus on completing one task instead of everything at once.",
   },
 
@@ -41,8 +38,7 @@ export const content: ContentItem[] = [
   {
     id: "academic-high-1",
     tag: "academic",
-    minStress: 8,
-    maxStress: 10,
+    intensity: "strong_winds",
     text: "You may need to pause and seek support before burnout worsens"
 
   },
@@ -52,8 +48,7 @@ export const content: ContentItem[] = [
   {
     id: "financial-low-1",
     tag: "financial",
-    minStress: 0,
-    maxStress: 3,
+    intensity: "light_rain",
     text: "Write down your essential expenses first.",
   },
 
@@ -61,8 +56,7 @@ export const content: ContentItem[] = [
   {
     id: "financial-mid-1",
     tag: "financial",
-    minStress: 4,
-    maxStress: 7,
+    intensity: "heavy_fog",
     text: "Avoid comparing your financial journey to others.",
   },
 
@@ -70,8 +64,7 @@ export const content: ContentItem[] = [
   {
     id: "financial-high-1",
     tag: "financial",
-    minStress: 8,
-    maxStress: 10,
+    intensity: "strong_winds",
     text: "Pause and seek support before it gets bad."
   },
 
@@ -79,8 +72,7 @@ export const content: ContentItem[] = [
 {
   id: "social-low-1",
   tag: "social",
-  minStress: 0,
-  maxStress: 3,
+  intensity: "light_rain",
   text: "A short break from comparison triggers may help.",
 },
 
@@ -88,8 +80,7 @@ export const content: ContentItem[] = [
 {
   id: "social-mid-1",
   tag: "social",
-  minStress: 4,
-  maxStress: 7,
+  intensity: "heavy_fog",
   text: "Talk to someone you trust instead of isolating yourself.",
 },
 
@@ -97,8 +88,7 @@ export const content: ContentItem[] = [
 {
   id: "social-high-1",
   tag: "social",
-  minStress: 8,
-  maxStress: 10,
+  intensity: "strong_winds",
   text: "Persistent social distress deserves deeper support.",
 },
 
@@ -106,8 +96,7 @@ export const content: ContentItem[] = [
   {
     id: "family-low-1",
     tag: "family",
-    minStress: 0,
-    maxStress: 3,
+    intensity: "light_rain",
     text: "Try expressing concerns calmly and directly.",
   },
 
@@ -115,8 +104,7 @@ export const content: ContentItem[] = [
   {
     id: "family-mid-1",
     tag: "family",
-    minStress: 4,
-    maxStress: 7,
+    intensity: "heavy_fog",
     text: "You are allowed to take emotional space when overwhelmed.",
   },
 
@@ -124,8 +112,7 @@ export const content: ContentItem[] = [
   {
     id: "family-high-1",
     tag: "family",
-    minStress: 8,
-    maxStress: 10,
+    intensity: "strong_winds",
     text: "Talking to someone who understands you better is helpful."
   }
 ];
@@ -133,29 +120,19 @@ export const content: ContentItem[] = [
 
 export function getContent({
   selection,
-  stressLevel,
-  history,
+  intensity,
 }: RecommendationContext) {
-  if (!selection || stressLevel === null){
+  if (selection.length === 0 || !intensity){
     return null;
   }
 
-  const recentAverage = getRecentAverage(history);
 
-  let matching = content.filter((item) => {
+  const matching = content.filter((item) => {
     return (
-      item.tag === selection &&
-      stressLevel >= item.minStress &&
-      stressLevel <= item.maxStress
+      selection.includes(item.tag) &&
+      item.intensity === intensity
     );
   });
-
-  if (matching.length === 0) return null;
-  if (recentAverage > 7) {
-    matching = matching.filter((item) =>
-      item.text.toLowerCase().includes("support")
-    );
-  }
 
   if (matching.length === 0) return null;
 
