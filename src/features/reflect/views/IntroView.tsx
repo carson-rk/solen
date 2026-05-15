@@ -19,11 +19,10 @@ export default function IntroView({
     onContinue,
 }: IntroViewProps) {
 
-    const needSupportSelection = 
-    mood === "heavy_fog" ||
-    mood === "light_rain" ||
-    mood === "strong_winds" ||
-    mood === "thunderstorm";
+    const needSupportSelection =
+      mood === "heavy_fog" ||
+      mood === "strong_winds" ||
+      mood === "thunderstorm";
     
     return(
         <section>
@@ -37,20 +36,36 @@ export default function IntroView({
                 You do not need perfect words right now.
             </p>
 
-            <div>
-                {moodOptions.map((moodItem) => (
-                    <button
-                    key={moodItem.id}
-                    onClick={() =>
-                        onSelectMood(moodItem.id as Mood)
-                    }
-                    >
-                        <h2>{moodItem.label}</h2>
+            {mood === null ? (
 
-                        <p>{moodItem.description}</p>
-                    </button>
-                ))}
-            </div>
+                <div>
+                    {moodOptions.map((moodItem) => (
+                        <button
+                          key={moodItem.id}
+                          onClick={() =>
+                           onSelectMood(moodItem.id as Mood)
+                          }
+                        >
+                            <h2>{moodItem.label}</h2>
+
+                            <p>{moodItem.description}</p>
+                        </button>
+                    ))}
+                </div>
+            ) : (
+
+                <div>
+                    <p>Your current mood is:</p>
+
+                    <h2>
+                        {
+                            moodOptions.find(
+                                (item) => item.id === mood 
+                            )?.label
+                        }
+                    </h2>
+                </div>
+            )}
 
             {needSupportSelection && (
                 <div>
@@ -71,13 +86,20 @@ export default function IntroView({
                         ))}
                     </div>
 
-                    <button
-                        onClick={onContinue}
-                    >
-                        Continue
-                    </button>
+                    
                 </div>
             )}
+
+            <button
+              onClick={onContinue}
+
+              disabled={
+                needSupportSelection &&
+                selectedIssues.length === 0
+              }
+            >
+                Continue
+            </button>
 
         </section>
   );

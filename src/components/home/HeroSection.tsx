@@ -24,7 +24,7 @@ export default function HeroSection() {
 
         <Link
           className="px-2.5 py-2.5 rounded-lg bg-(--primary) text-white"
-          href="/support"
+          href="/explore"
         >
           How It Works
         </Link>

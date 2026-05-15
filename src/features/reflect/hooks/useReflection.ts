@@ -19,7 +19,8 @@ export type Issue =
   | "academic"
   | "social"
   | "relationship"
-  | "life";
+  | "life"
+  | "general";
 
 /* mood → level mapping */
 const moodLevels: Record<Mood, number> = {

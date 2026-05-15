@@ -1,12 +1,22 @@
-import { Mood } from "../hooks/useReflection";
+import { Issue, Mood } from "../hooks/useReflection";
+import { getRecommendedContent } from "@/lib/content/getRecommendedContent";
 
 type SupportViewProps = {
   mood: Mood;
+  selectedIssues: Issue[];
 };
 
 export default function SupportView({
   mood,
+  selectedIssues,
 }: SupportViewProps) {
+
+  const recommendedContent =
+  getRecommendedContent({
+    mood,
+    issues: selectedIssues,
+    access: "public",
+  });
 
   return (
     <section>
@@ -71,6 +81,22 @@ export default function SupportView({
           </p>
         </>
       )}
+
+      <div>
+      
+        <h2>Recommended Support</h2>
+
+          {recommendedContent.map((article) => (
+            <article key={article.id}>
+
+              <h3>{article.title}</h3>
+
+              <p>{article.description}</p>
+
+            </article>
+          ))}
+
+      </div>
 
     </section>
   );

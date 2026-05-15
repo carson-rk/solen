@@ -41,6 +41,7 @@ export default function ReflectPage() {
         {showSupport && mood && (
             <SupportView
             mood={mood}
+            selectedIssues={selectedIssues}
             />
         )}
     </main>
