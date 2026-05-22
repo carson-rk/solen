@@ -5,24 +5,10 @@ import { useState, useEffect } from "react";
 import {
   loadHistory,
   saveHistory,
-  HistoryItem,
+  type HistoryItem,
 } from "@/lib/storage/historyStorage";
+import type { Issue, Mood } from "@/features/reflect/types";
 
-export type Mood =
-  | "clear_skies"
-  | "light_rain"
-  | "heavy_fog"
-  | "strong_winds"
-  | "thunderstorm";
-
-export type Issue =
-  | "academic"
-  | "social"
-  | "relationship"
-  | "life"
-  | "general";
-
-/* mood → level mapping */
 const moodLevels: Record<Mood, number> = {
   clear_skies: 1,
   light_rain: 2,
@@ -32,15 +18,9 @@ const moodLevels: Record<Mood, number> = {
 };
 
 export function useReflection() {
-
-  const [mood, setMood] =
-    useState<Mood | null>(null);
-
-  const [selectedIssues, setSelectedIssues] =
-    useState<Issue[]>([]);
-
-  const [history, setHistory] =
-    useState<HistoryItem[]>(() => loadHistory());
+  const [mood, setMood] = useState<Mood | null>(null);
+  const [selectedIssues, setSelectedIssues] = useState<Issue[]>([]);
+  const [history, setHistory] = useState<HistoryItem[]>(() => loadHistory());
 
   useEffect(() => {
     saveHistory(history);
@@ -55,12 +35,12 @@ export function useReflection() {
     });
   }
 
-  function selectMood(mood: Mood) {
-    setMood(mood);
+  function selectMood(nextMood: Mood) {
+    setMood(nextMood);
 
     const newEntry: HistoryItem = {
-      moodId: mood,
-      level: moodLevels[mood],
+      moodId: nextMood,
+      level: moodLevels[nextMood],
       timestamp: Date.now(),
     };
 
@@ -70,10 +50,8 @@ export function useReflection() {
   return {
     mood,
     selectMood,
-
     selectedIssues,
     toggleIssue,
-
     history,
   };
 }

@@ -1,84 +1,51 @@
-# Alignwell Mental Health Adaptive Flow System (MVP)
+# Solen - Reflective Intelligent System (MVP)
 
-This is a prototype web application that models an adaptive mental health support system.  
-It routes users through different support paths (content, peer support, counselor referral) based on:
-
-- What issue they are experiencing (selection)
-- How intense the issue is (stress level)
-- Their historical patterns (behavior over time)
+Solen helps founders, developers, and high-performers see their behavioral patterns, align with their identity, and avoid burnout. It is designed for the psychological realities of modern young adulthood.
 
 ---
 
-## System Overview
+## Project Folder
 
-This project is a **state-driven decision system**, not a traditional form app.
-
-It behaves like a lightweight mental health routing engine:
-
-User Input → Context Model → Flow Engine → State Transition → Content Output
-
-
----
+src/
+├── app/                          # Routes only — thin pages
+│   ├── layout.tsx
+│   ├── page.tsx                  # /
+│   ├── explore/page.tsx
+│   ├── reflect/page.tsx
+│   ├── auth/page.tsx
+│   ├── stories/page.tsx
+│   ├── support/page.tsx
+│   └── (entry)/about/page.tsx    # /about
+├── components/
+│   ├── layout/Container.tsx
+│   ├── ui/                       # shadcn primitives
+│   └── shared/                   # Navbar, Footer
+├── features/
+│   ├── reflect/
+│   │   ├── types.ts
+│   │   ├── data/                 # moodOptions, issues
+│   │   ├── hooks/useReflection.ts
+│   │   ├── views/                # IntroView, SupportView
+│   │   └── components/           # MoodCard
+│   ├── content/
+│   │   ├── types.ts
+│   │   ├── articles.ts
+│   │   └── resolver/             # getMoodLevel, getRecommendedContent
+│   ├── explore/
+│   │   ├── data/
+│   │   └── components/           # landing sections
+│   └── home/
+│       └── components/           # HeroSection
+├── lib/
+│   ├── utils.ts                  # cn()
+│   └── storage/historyStorage.ts
+└── styles/globals.css
 
 ## Core Architecture
 
-### 1. State Machine (Flow Control)
-
-Defined in:
-
-src/lib/flowGraph.ts
-
-States:
-
-- `intro`
-- `selection`
-- `intensity`
-- `content`
-- `peer`
-- `counselor`
-
-Each state transitions based on rules defined in a **flow graph**.
-
----
-
-### 2. Transition Engine
-
-Defined in:
-
-src/lib/transitionEngine.ts
-
-Responsible for:
-
-- Evaluating conditions
-- Selecting the next state
-- Applying rule priority (first match wins)
-
----
-
-### 3. Context Model
-
-The system decision-making is driven by a shared context.
-
-### 4. Content System
-Defined in:
-
-src/lib/content.ts
-
-Maps user selections to contextual mental health guidance.
-
-Example:
-
-- academic → study breakdown strategies
-- financial → budgeting guidance
-- social → social stress coping
-- family → communication support
-
-### 5. Persistence Layer
-
-Uses browser storage:
-
-- <localStorage> stores user history
-- Allows session continuity after refresh
+- **State Driven (Flow Control)** : UI follows emotional state (mood → issues → support), not infinite scroll or engagement loops.
+- **Calm Surfaces** : Thin routes, progressive disclosure (Intro -> Support), minimal chrome.
+- **Features own emotion; components own presentation** : no mood logic in components.
 
 ---
 

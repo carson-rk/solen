@@ -1,17 +1,17 @@
-import HeroSection from "@/components/explore/HeroSection";
-import ExploreOptionsSection from "@/components/explore/ExploreOptionsSection";
-import TrustSection from "@/components/explore/TrustSection";
-import ExplainSection from "@/components/explore/ExplainSection";
-import ActionSection from "@/components/explore/ActionSection";
+import HeroSection from "@/features/explore/components/HeroSection";
+import ExploreOptionsSection from "@/features/explore/components/ExploreOptionsSection";
+import TrustSection from "@/features/explore/components/TrustSection";
+import ExplainSection from "@/features/explore/components/ExplainSection";
+import ActionSection from "@/features/explore/components/ActionSection";
 
 export default function ExplorePage() {
   return (
     <main>
-      <HeroSection/>
-      <ExplainSection/>
-      <ExploreOptionsSection/>
-      <TrustSection/>
-      <ActionSection/>
+      <HeroSection />
+      <ExplainSection />
+      <ExploreOptionsSection />
+      <TrustSection />
+      <ActionSection />
     </main>
   );
 }
