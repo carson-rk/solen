@@ -15,9 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "AlignWell — Mental Health Support for Students",
+  title: "Solen - Emotional Environment Support",
   description:
-    "A private mental health support platform helping students navigate stress, overwhelm, and emotional weight with clarity and connection. Reflect privately, access relatable support, and get guided toward the right help.",
+    "A private state-driven emotional environment for naming stress, pacing reflection, and revealing support calmly.",
 };
 
 export default function RootLayout({
@@ -31,13 +31,11 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        
         <Navbar />
 
         {children}
 
         <Footer />
-
       </body>
     </html>
   );
