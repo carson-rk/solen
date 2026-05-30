@@ -1,0 +1,37 @@
+@layer base {
+    :root {
+      /* Surface */
+      --surface-base: 36 43% 95%;
+      --surface-elevated: 39 38% 93%;
+  
+      /* Text */
+      --text-primary: 27 23% 18%;
+      --text-secondary: 26 18% 41%;
+      --text-ambient: 30 20% 61%;
+  
+      /* Actions */
+      --action-proceed: 26 52% 50%;
+      --action-proceed-foreground: 36 43% 95%;
+      --action-settle: 39 30% 88%;
+      --action-settle-foreground: 27 23% 18%;
+  
+      /* Accent */
+      --accent-base: 24 55% 62%;
+      --accent-soft: 32 62% 76%;
+  
+      /* Atmosphere */
+      --atmosphere-fog: 36 43% 95%;
+      --atmosphere-glow: 32 62% 76%;
+      --atmosphere-noise: 27 23% 18%;
+      --atmosphere-shadow: 27 23% 18%;
+      --atmosphere-veil: 39 38% 93%;
+  
+      /* Border */
+      --border-base: 26 38% 46%;
+    }
+  }
+  
+  body {
+    background-color: hsl(var(--surface-base));
+    color: hsl(var(--text-primary));
+  }
