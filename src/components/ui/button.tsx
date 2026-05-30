@@ -1,70 +1,71 @@
 import * as React from "react"
+import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
-import { Slot } from "radix-ui"
 
 import { cn } from "@/lib/utils"
 
-const buttonVariants = cva(
-  "group/button inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-colors duration-200 ease-out outline-none select-none focus-visible:border-ring/60 focus-visible:ring-2 focus-visible:ring-ring/25 focus-visible:ring-offset-2 focus-visible:ring-offset-background active:opacity-90 disabled:pointer-events-none disabled:opacity-40 aria-invalid:border-destructive/60 aria-invalid:ring-2 aria-invalid:ring-destructive/15 dark:aria-invalid:border-destructive/40 dark:aria-invalid:ring-destructive/25 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+/**
+ * Solen Atmospheric Button Primitive
+ */
+const buttonIntents = cva(
+  // Base Atmospheric Tokens: Softer transitions, semantic focus rings
+  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm tracking-wide transition-all duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-soft focus-visible:ring-offset-2 focus-visible:ring-offset-surface-base disabled:pointer-events-none disabled:opacity-30 [&_svg]:pointer-events-none [&_svg]:shrink-0",
   {
     variants: {
-      variant: {
-        default:
-          "bg-primary/88 text-primary-foreground shadow-none hover:bg-primary/76 active:bg-primary/82",
-        outline:
-          "border-border/70 bg-background text-foreground/90 hover:border-border hover:bg-muted/65 hover:text-foreground aria-expanded:border-border aria-expanded:bg-muted/70 aria-expanded:text-foreground dark:border-input/80 dark:bg-input/20 dark:hover:bg-input/35",
-        secondary:
-          "bg-secondary/90 text-secondary-foreground hover:bg-muted/80 hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground",
-        ghost:
-          "text-foreground/85 hover:bg-muted/55 hover:text-foreground aria-expanded:bg-muted/55 aria-expanded:text-foreground dark:hover:bg-muted/35",
-        ghostQuiet:
-          "text-muted-foreground hover:bg-muted/35 hover:text-foreground/90 aria-expanded:bg-muted/30 aria-expanded:text-foreground/85",
-        destructive:
-          "bg-destructive/8 text-destructive/90 hover:bg-destructive/14 focus-visible:border-destructive/30 focus-visible:ring-destructive/15 dark:bg-destructive/15 dark:hover:bg-destructive/22 dark:focus-visible:ring-destructive/25",
-        link: "text-foreground/70 underline-offset-4 decoration-foreground/25 hover:text-foreground hover:underline",
+      intent: {
+        // The action of moving forward or confirming.
+        proceed:
+          "bg-[hsl(var(--action-proceed))] text-[hsl(var(--action-proceed-foreground))] hover:brightness-110 active:scale-[0.98]",
+        
+        // Grounding actions, remaining in the current state but adjusting.
+        settle:
+          "bg-[hsl(var(--action-settle))] text-[hsl(var(--action-settle-foreground))] hover:bg-[hsl(var(--surface-elevated))] active:scale-[0.98]",
+
+        // Passive actions, looking without altering.
+        observe:
+          "text-[hsl(var(--text-secondary))] hover:text-[hsl(var(--text-primary))] hover:bg-[hsl(var(--surface-elevated))/0.5]",
+        
+        // Removing, canceling, or letting go of something.
+        dissolve:
+          "text-[hsl(var(--text-ambient))] hover:text-[hsl(var(--text-primary))] hover:bg-[hsl(var(--border-base))/0.1]",
+          
+        // Moving backward or stepping out of the current flow.
+        withdraw:
+          "text-[hsl(var(--text-secondary))] underline-offset-4 hover:text-[hsl(var(--text-primary))] hover:underline",
       },
       size: {
-        default:
-          "h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
-        xs: "h-6 gap-1 rounded-[min(var(--radius-md),10px)] px-2 text-xs in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3",
-        sm: "h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5",
-        lg: "h-9 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
-        icon: "size-8",
-        "icon-xs":
-          "size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3",
-        "icon-sm":
-          "size-7 rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg",
-        "icon-lg": "size-9",
+        default: "h-9 px-4 py-2",
+        sm: "h-8 px-3 text-xs",
+        lg: "h-11 px-8 text-base",
+        icon: "size-9 [&_svg]:size-4",
       },
     },
     defaultVariants: {
-      variant: "default",
+      intent: "proceed",
       size: "default",
     },
   }
 )
 
-function Button({
-  className,
-  variant = "default",
-  size = "default",
-  asChild = false,
-  ...props
-}: React.ComponentProps<"button"> &
-  VariantProps<typeof buttonVariants> & {
-    asChild?: boolean
-  }) {
-  const Comp = asChild ? Slot.Root : "button"
-
-  return (
-    <Comp
-      data-slot="button"
-      data-variant={variant}
-      data-size={size}
-      className={cn(buttonVariants({ variant, size, className }))}
-      {...props}
-    />
-  )
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonIntents> {
+  asChild?: boolean
 }
 
-export { Button, buttonVariants }
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, intent, size, asChild = false, ...props }, ref) => {
+    const Comp = asChild ? Slot : "button"
+    
+    return (
+      <Comp
+        className={cn(buttonIntents({ intent, size, className }))}
+        ref={ref}
+        {...props}
+      />
+    )
+  }
+)
+Button.displayName = "Button"
+
+export { Button, buttonIntents }

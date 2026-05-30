@@ -7,7 +7,7 @@ export default function Navbar() {
 
                 {/* LOGO */}
                 <Link href="/" className="text-2xl font-(--font-heading)">
-                    Alignwell
+                    Solen
                 </Link>
 
                 {/* DESKTOP LINKS */}

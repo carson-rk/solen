@@ -5,7 +5,7 @@ export default function Footer() {
         <div className="content-width">
   
           <p>
-            AlignWell © 2026
+            Solen © 2026
           </p>
   
         </div>
