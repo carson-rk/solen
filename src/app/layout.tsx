@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: "Solen - Emotional Environment Support",
   description:
-    "A private state-driven emotional environment for naming stress, pacing reflection, and revealing support calmly.",
+    "A private atmospheric room for arrival, settling, and emotionally ambiguous support.",
 };
 
 export default function RootLayout({

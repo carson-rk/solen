@@ -12,8 +12,8 @@ export default function Navbar() {
 
                 {/* DESKTOP LINKS */}
                 <div className="hidden">
-                    <Link href="/explore">
-                        Explore
+                    <Link href="/room">
+                        Room
                     </Link>
 
                     <Link href="/stories">

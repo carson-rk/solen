@@ -11,6 +11,7 @@ export const climateIds = [
   "heavy_fog",
   "strong_winds",
   "thunderstorm",
+  "neutral", // A baseline, non-descript climate for initial states
 ] as const;
 
 export type Climate = (typeof climateIds)[number];
@@ -85,6 +86,16 @@ export const climateConfigs: Record<Climate, ClimateConfig> = {
       defaultPacing: "immediate"
     },
   },
+  neutral: {
+    id: "neutral",
+    label: "Neutral",
+    perception: "balanced and stable",
+    depth: 0,
+    interactionProfile: { 
+      requiresResonanceDeepening: false,
+      defaultPacing: "steady"
+    },
+  }
 };
 
 /**

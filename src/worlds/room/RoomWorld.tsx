@@ -1,72 +1,71 @@
 "use client";
 
-import Link from "next/link";
+import { useState } from "react";
 
-import { Container } from "@/components/layout/Container";
-import { RoomFrame } from "@/components/layout/environmental/RoomFrame";
-import { AtmosphericStack } from "@/components/layout/environmental/AtmosphericStack";
-
-import { Button } from "@/components/ui/button";
-import { EnvironmentReveal } from "@/systems/environment/primitives/EnvironmentReveal";
+import type { Climate } from "@/domain/climate";
+import type { EnvironmentStage } from "@/domain/environmentalPresence";
 import { EnvironmentSurface } from "@/systems/environment/EnvironmentSurface";
 import { useEnvironment } from "@/features/environment/hooks/useEnvironment";
-import { roomArrivalPlan } from "@/systems/pacing/plans";
-import { usePacedReveal } from "@/systems/pacing/usePacedReveal";
+import { Container } from "@/components/layout/Container";
+import { RoomFrame } from "@/components/layout/environmental/RoomFrame";
+import { ArrivalStage } from "@/systems/environment/stages/arrival/ArrivalStage";
+import {
+  SettlingStage,
+  type SettlingClimate,
+} from "@/systems/environment/stages/settling/SettlingStage";
 
 export default function RoomWorld() {
+  const [stage, setStage] = useState<EnvironmentStage>("arrival");
+  const [climate, setClimate] = useState<Climate>("neutral");
+  const [hoverClimate, setHoverClimate] = useState<SettlingClimate | null>(null);
+  const activeClimate = hoverClimate ?? climate;
+
   const environment = useEnvironment({
-    stage: "arrival",
-    climate: null,
+    stage,
+    climate: activeClimate,
     resonances: [],
   });
-  
-  const reveal = usePacedReveal({
-    ...roomArrivalPlan,
-    resetKey: environment.stateKey,
-  });
+
+  const handleContinue = () => {
+    setHoverClimate(null);
+    setStage("settling");
+  };
+
+  const handleSelectClimate = (selectedClimate: SettlingClimate) => {
+    setClimate(selectedClimate);
+    setHoverClimate(null);
+  };
+
+  const handleSkip = () => {
+    setClimate("neutral");
+    setHoverClimate(null);
+  };
 
   return (
-    <EnvironmentSurface atmosphere={environment.environmentResponse}>
+    <EnvironmentSurface
+      atmosphere={environment.environmentResponse}
+      state={environment.state}
+    >
       <Container>
         <RoomFrame>
-          <AtmosphericStack>
-            
-            <EnvironmentReveal phase={reveal.getPhase("room-signal")}>
-              {/* Note: In the future, this text color might use your new token classes like text-text-ambient */}
-              <p className="text-sm uppercase text-[hsl(var(--text-ambient))]">
-                Solen
-              </p>
-            </EnvironmentReveal>
+          {stage === "arrival" && (
+            <ArrivalStage 
+              resetKey={stage}
+              onContinue={handleContinue} 
+            />
+          )}
 
-            <EnvironmentReveal
-              className="mt-6"
-              phase={reveal.getPhase("room-title")}
-            >
-              <h1 className="heading">
-                you&apos;re here.
-              </h1>
-            </EnvironmentReveal>
-
-            <EnvironmentReveal
-              className="mt-5"
-              phase={reveal.getPhase("room-copy")}
-            >
-              <p className="max-w-xl text-base leading-7 text-[hsl(var(--text-secondary))] sm:text-lg">
-                that is enough for now.
-              </p>
-            </EnvironmentReveal>
-
-            <EnvironmentReveal
-              className="mt-9"
-              phase={reveal.getPhase("room-action")}
-            >
-            
-              <Button asChild intent="proceed" size="lg">
-                <Link href="/reflect">Continue</Link>
-              </Button>
-            </EnvironmentReveal>
-            
-          </AtmosphericStack>
+          {stage === "settling" && (
+            <SettlingStage
+              resetKey={stage}
+              selectedClimate={climate}
+              previewClimate={hoverClimate}
+              onPreviewClimate={setHoverClimate}
+              onClearPreviewClimate={() => setHoverClimate(null)}
+              onSelectClimate={handleSelectClimate}
+              onSkip={handleSkip}
+            />
+          )}
         </RoomFrame>
       </Container>
     </EnvironmentSurface>

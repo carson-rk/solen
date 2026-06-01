@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils"
  */
 const buttonIntents = cva(
   // Base Atmospheric Tokens: Softer transitions, semantic focus rings
-  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm tracking-wide transition-all duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-soft focus-visible:ring-offset-2 focus-visible:ring-offset-surface-base disabled:pointer-events-none disabled:opacity-30 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm tracking-wide transition-all duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[hsl(var(--accent-soft))] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(var(--surface-base))] disabled:pointer-events-none disabled:opacity-30 [&_svg]:pointer-events-none [&_svg]:shrink-0",
   {
     variants: {
       intent: {
@@ -23,11 +23,11 @@ const buttonIntents = cva(
 
         // Passive actions, looking without altering.
         observe:
-          "text-[hsl(var(--text-secondary))] hover:text-[hsl(var(--text-primary))] hover:bg-[hsl(var(--surface-elevated))/0.5]",
+          "text-[hsl(var(--text-secondary))] hover:text-[hsl(var(--text-primary))] hover:bg-[hsl(var(--surface-elevated)_/_0.5)]",
         
         // Removing, canceling, or letting go of something.
         dissolve:
-          "text-[hsl(var(--text-ambient))] hover:text-[hsl(var(--text-primary))] hover:bg-[hsl(var(--border-base))/0.1]",
+          "text-[hsl(var(--text-ambient))] hover:text-[hsl(var(--text-primary))] hover:bg-[hsl(var(--border-base)_/_0.1)]",
           
         // Moving backward or stepping out of the current flow.
         withdraw:
