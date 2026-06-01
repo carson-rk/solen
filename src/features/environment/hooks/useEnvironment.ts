@@ -5,10 +5,11 @@ import { useMemo } from "react";
 import type { ResonanceId } from "@/domain/resonance"; 
 import type { Climate } from "@/domain/climate";
 import type { EnvironmentStage } from "@/domain/environmentalPresence";
-import { deriveEnvironment } from "@/systems/atmosphere/environmentResponse";
+import { deriveEnvironment, type EnvironmentResponse } from "@/systems/atmosphere/environmentResponse";
 import {
   createEnvironmentState,
   getEnvironmentStateKey,
+  type EnvironmentState,
 } from "@/systems/environment/environmentState";
 
 type UseEnvironmentInput = {
@@ -18,35 +19,36 @@ type UseEnvironmentInput = {
   continuityWeight?: number;
 };
 
+type EnvironmentHookReturn = {
+  environmentResponse: EnvironmentResponse;
+  state: EnvironmentState; 
+  stateKey: string;
+};
+
 export function useEnvironment({
-  stage,
-  climate,
-  resonances,
+  stage: initialStage,
+  climate: initialClimate,
+  resonances: initialResonances,
   continuityWeight = 0,
-}: UseEnvironmentInput) {
-  
-  // Safe React Stabilization: 
-  const resonanceKey = [...resonances].sort().join(",");
+}: UseEnvironmentInput): EnvironmentHookReturn {
+  const resonanceKey = [...initialResonances].sort().join(",");
   
   const stableResonances = useMemo(
     () => (resonanceKey ? (resonanceKey.split(",") as ResonanceId[]) : []),
     [resonanceKey]
   );
 
-  // Core State Generation:
   const state = useMemo(
     () =>
       createEnvironmentState({
-        stage,
-        climate,
+        stage: initialStage,
+        climate: initialClimate,
         resonances: stableResonances,
         continuityWeight,
       }),
-    [continuityWeight, climate, stableResonances, stage]
+    [continuityWeight, initialClimate, initialStage, stableResonances]
   );
 
-  // The Physical Output:
-  
   const environmentResponse = useMemo(() => deriveEnvironment(state), [state]);
   
   const stateKey = useMemo(() => getEnvironmentStateKey(state), [state]);
