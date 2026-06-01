@@ -1,9 +1,22 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, type ReactNode } from "react";
 import type { EnvironmentState } from "./environmentState";
 import { climateConfigs } from "@/domain/climate";
 import type { EmergencePacing } from "./primitives/EnvironmentReveal";
 
 const EnvironmentContext = createContext<EnvironmentState | null>(null);
+
+type EnvironmentProviderProps = {
+  state: EnvironmentState;
+  children: ReactNode;
+};
+
+export function EnvironmentProvider({ state, children }: EnvironmentProviderProps) {
+  return (
+    <EnvironmentContext.Provider value={state}>
+      {children}
+    </EnvironmentContext.Provider>
+  );
+}
 
 /**
  * A specialized hook just for rendering primitives to ask:

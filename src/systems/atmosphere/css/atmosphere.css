@@ -28,6 +28,22 @@
   
       /* Border */
       --border-base: 26 38% 46%;
+
+      /* Atmospheric response */
+      --atmospheric-pressure: 0;
+      --atmosphere-transition-duration: 900ms;
+      --atmosphere-haze-opacity: 0.24;
+      --atmosphere-haze-blur: 18px;
+      --atmosphere-canopy-scale: 1;
+      --atmosphere-veil-opacity: 0.34;
+      --atmosphere-glow-opacity: 0.18;
+      --atmosphere-noise-opacity: 0.025;
+      --atmosphere-noise-size: 22px;
+      --typography-contrast: 1;
+      --typography-presence: 0.9;
+      --typography-spacing-shift: 0rem;
+      --settling-support-opacity: 0.78;
+      --orb-rest-opacity: 0.72;
     }
   }
   
@@ -35,3 +51,329 @@
     background-color: hsl(var(--surface-base));
     color: hsl(var(--text-primary));
   }
+
+.world-engine-root {
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      circle at 50% 8%,
+      hsl(var(--atmosphere-glow) / var(--atmosphere-glow-opacity)),
+      transparent 36rem
+    ),
+    hsl(var(--surface-base));
+  color: hsl(var(--text-primary));
+  transition:
+    background-color var(--atmosphere-transition-duration) ease,
+    filter var(--atmosphere-transition-duration) ease;
+}
+
+.world-engine-root[data-climate="neutral"],
+.world-engine-root[data-climate="unselected"] {
+  --atmosphere-transition-duration: 900ms;
+  --atmosphere-haze-opacity: 0.24;
+  --atmosphere-haze-blur: 18px;
+  --atmosphere-canopy-scale: 1;
+  --atmosphere-veil-opacity: 0.34;
+  --atmosphere-glow-opacity: 0.18;
+  --atmosphere-noise-opacity: 0.025;
+  --atmosphere-noise-size: 22px;
+  --typography-contrast: 1;
+  --typography-presence: 0.9;
+  --typography-spacing-shift: 0rem;
+  --settling-support-opacity: 0.78;
+  --orb-rest-opacity: 0.72;
+}
+
+.world-engine-root[data-climate="clear_skies"] {
+  --atmosphere-transition-duration: 760ms;
+  --atmosphere-haze-opacity: 0.16;
+  --atmosphere-haze-blur: 12px;
+  --atmosphere-canopy-scale: 1.01;
+  --atmosphere-veil-opacity: 0.2;
+  --atmosphere-glow-opacity: 0.26;
+  --atmosphere-noise-opacity: 0.012;
+  --atmosphere-noise-size: 28px;
+  --typography-contrast: 1.04;
+  --typography-presence: 0.96;
+  --typography-spacing-shift: 0.05rem;
+  --settling-support-opacity: 0.82;
+  --orb-rest-opacity: 0.78;
+}
+
+.world-engine-root[data-climate="light_rain"] {
+  --atmosphere-transition-duration: 1100ms;
+  --atmosphere-haze-opacity: 0.34;
+  --atmosphere-haze-blur: 22px;
+  --atmosphere-canopy-scale: 1.02;
+  --atmosphere-veil-opacity: 0.42;
+  --atmosphere-glow-opacity: 0.14;
+  --atmosphere-noise-opacity: 0.04;
+  --atmosphere-noise-size: 18px;
+  --typography-contrast: 0.98;
+  --typography-presence: 0.86;
+  --typography-spacing-shift: 0.12rem;
+  --settling-support-opacity: 0.74;
+  --orb-rest-opacity: 0.76;
+}
+
+.world-engine-root[data-climate="heavy_fog"] {
+  --atmosphere-transition-duration: 1800ms;
+  --atmosphere-haze-opacity: 0.62;
+  --atmosphere-haze-blur: 34px;
+  --atmosphere-canopy-scale: 1.04;
+  --atmosphere-veil-opacity: 0.58;
+  --atmosphere-glow-opacity: 0.1;
+  --atmosphere-noise-opacity: 0.032;
+  --atmosphere-noise-size: 24px;
+  --typography-contrast: 0.92;
+  --typography-presence: 0.78;
+  --typography-spacing-shift: 0.22rem;
+  --settling-support-opacity: 0.66;
+  --orb-rest-opacity: 0.82;
+}
+
+.world-engine-root[data-climate="strong_winds"] {
+  --atmosphere-transition-duration: 520ms;
+  --atmosphere-haze-opacity: 0.28;
+  --atmosphere-haze-blur: 16px;
+  --atmosphere-canopy-scale: 1.03;
+  --atmosphere-veil-opacity: 0.3;
+  --atmosphere-glow-opacity: 0.2;
+  --atmosphere-noise-opacity: 0.06;
+  --atmosphere-noise-size: 14px;
+  --typography-contrast: 1.02;
+  --typography-presence: 0.88;
+  --typography-spacing-shift: 0.08rem;
+  --settling-support-opacity: 0.76;
+  --orb-rest-opacity: 0.8;
+}
+
+.world-engine-root[data-climate="thunderstorm"] {
+  --atmosphere-transition-duration: 440ms;
+  --atmosphere-haze-opacity: 0.5;
+  --atmosphere-haze-blur: 28px;
+  --atmosphere-canopy-scale: 1.05;
+  --atmosphere-veil-opacity: 0.64;
+  --atmosphere-glow-opacity: 0.12;
+  --atmosphere-noise-opacity: 0.08;
+  --atmosphere-noise-size: 12px;
+  --typography-contrast: 1.08;
+  --typography-presence: 0.84;
+  --typography-spacing-shift: 0.16rem;
+  --settling-support-opacity: 0.72;
+  --orb-rest-opacity: 0.86;
+}
+
+.world-canopy,
+.atmosphere-layer {
+  transition:
+    opacity var(--atmosphere-transition-duration) ease,
+    filter var(--atmosphere-transition-duration) ease,
+    transform var(--atmosphere-transition-duration) ease;
+}
+
+.atmosphere-haze {
+  background:
+    radial-gradient(
+      circle at 50% 18%,
+      hsl(var(--atmosphere-glow) / var(--atmosphere-glow-opacity)),
+      transparent 34rem
+    ),
+    hsl(var(--atmosphere-fog) / 0.72);
+  filter: blur(var(--atmosphere-haze-blur));
+  opacity: var(--atmosphere-haze-opacity);
+  transform: scale(var(--atmosphere-canopy-scale));
+}
+
+.atmosphere-veil {
+  background:
+    linear-gradient(
+      180deg,
+      hsl(var(--atmosphere-veil) / 0.72),
+      hsl(var(--surface-base) / 0.18)
+    );
+  opacity: var(--atmosphere-veil-opacity);
+}
+
+.world-canopy::after {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(
+    hsl(var(--atmosphere-noise) / 0.12) 1px,
+    transparent 1px
+  );
+  background-size: var(--atmosphere-noise-size) var(--atmosphere-noise-size);
+  content: "";
+  opacity: var(--atmosphere-noise-opacity);
+  transition:
+    opacity var(--atmosphere-transition-duration) ease,
+    background-size var(--atmosphere-transition-duration) ease;
+}
+
+.settling-stage {
+  gap: calc(1.25rem + var(--typography-spacing-shift));
+}
+
+.settling-title {
+  filter: contrast(var(--typography-contrast));
+  opacity: var(--typography-presence);
+  transition:
+    filter var(--atmosphere-transition-duration) ease,
+    opacity var(--atmosphere-transition-duration) ease;
+}
+
+.settling-support-wrap,
+.settling-orbs-wrap,
+.settling-skip-wrap {
+  margin-top: 0;
+}
+
+.settling-support {
+  max-width: 34rem;
+  color: hsl(var(--text-secondary));
+  font-size: 1rem;
+  line-height: 1.75;
+  opacity: var(--settling-support-opacity);
+  transition:
+    color var(--atmosphere-transition-duration) ease,
+    opacity var(--atmosphere-transition-duration) ease;
+}
+
+.settling-orb-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  align-items: flex-start;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.climate-orb {
+  --orb-size: 4.75rem;
+  --orb-accent-opacity: 0.38;
+  --orb-edge-opacity: 0.12;
+  --orb-inner-opacity: 0.92;
+  --orb-softness: 0px;
+  --orb-hover-scale: 1.04;
+
+  display: inline-flex;
+  min-width: 5.5rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: hsl(var(--text-secondary));
+  cursor: pointer;
+  opacity: var(--orb-rest-opacity);
+  text-align: center;
+  transition:
+    color var(--atmosphere-transition-duration) ease,
+    opacity var(--atmosphere-transition-duration) ease,
+    transform var(--atmosphere-transition-duration) ease;
+}
+
+.climate-orb[data-climate="clear_skies"] {
+  --orb-accent-opacity: 0.46;
+  --orb-edge-opacity: 0.08;
+  --orb-softness: 0px;
+  --orb-hover-scale: 1.05;
+}
+
+.climate-orb[data-climate="light_rain"] {
+  --orb-accent-opacity: 0.34;
+  --orb-edge-opacity: 0.14;
+  --orb-softness: 1px;
+  --orb-hover-scale: 1.035;
+}
+
+.climate-orb[data-climate="heavy_fog"] {
+  --orb-accent-opacity: 0.24;
+  --orb-edge-opacity: 0.1;
+  --orb-inner-opacity: 0.72;
+  --orb-softness: 5px;
+  --orb-hover-scale: 1.02;
+}
+
+.climate-orb[data-climate="strong_winds"] {
+  --orb-accent-opacity: 0.42;
+  --orb-edge-opacity: 0.18;
+  --orb-softness: 0px;
+  --orb-hover-scale: 1.06;
+}
+
+.climate-orb[data-climate="thunderstorm"] {
+  --orb-accent-opacity: 0.3;
+  --orb-edge-opacity: 0.28;
+  --orb-inner-opacity: 0.8;
+  --orb-softness: 2px;
+  --orb-hover-scale: 1.04;
+}
+
+.climate-orb__core {
+  width: var(--orb-size);
+  aspect-ratio: 1;
+  border-radius: 9999px;
+  background:
+    radial-gradient(
+      circle at 36% 28%,
+      hsl(var(--surface-base) / var(--orb-inner-opacity)),
+      hsl(var(--accent-soft) / var(--orb-accent-opacity)) 48%,
+      hsl(var(--border-base) / var(--orb-edge-opacity))
+    );
+  box-shadow:
+    0 1.25rem 2.5rem hsl(var(--atmosphere-shadow) / 0.08),
+    inset 0 0 1.5rem hsl(var(--surface-base) / 0.54);
+  filter: blur(var(--orb-softness));
+  transition:
+    box-shadow var(--atmosphere-transition-duration) ease,
+    filter var(--atmosphere-transition-duration) ease,
+    transform var(--atmosphere-transition-duration) ease;
+}
+
+.climate-orb__label {
+  color: currentColor;
+  font-size: 0.8125rem;
+  line-height: 1.25;
+  opacity: 0.86;
+}
+
+.climate-orb:hover,
+.climate-orb:focus-visible,
+.climate-orb.is-previewed,
+.climate-orb.is-selected {
+  color: hsl(var(--text-primary));
+  opacity: 1;
+}
+
+.climate-orb:hover .climate-orb__core,
+.climate-orb:focus-visible .climate-orb__core,
+.climate-orb.is-previewed .climate-orb__core {
+  transform: translateY(-0.15rem) scale(var(--orb-hover-scale));
+}
+
+.climate-orb.is-selected .climate-orb__core {
+  box-shadow:
+    0 1.25rem 2.75rem hsl(var(--atmosphere-shadow) / 0.12),
+    0 0 0 1px hsl(var(--accent-soft) / 0.58),
+    inset 0 0 1.5rem hsl(var(--surface-base) / 0.62);
+}
+
+.climate-orb:focus-visible {
+  outline: 1px solid hsl(var(--accent-soft));
+  outline-offset: 0.45rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .world-engine-root,
+  .world-canopy,
+  .atmosphere-layer,
+  .settling-title,
+  .settling-support,
+  .climate-orb,
+  .climate-orb__core {
+    transition: none;
+  }
+}

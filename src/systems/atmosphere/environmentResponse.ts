@@ -1,5 +1,6 @@
 import type { Climate } from "@/domain/climate"; 
 import type { EnvironmentState } from "@/systems/environment/environmentState";
+import type { EnvironmentStage } from "@/domain/environmentalPresence";
 
 /**
  *  Strict Typing for Resonance
@@ -12,15 +13,29 @@ export type EnvironmentResonance =
   | "steadying"
   | "sheltering";
 
+export type EnvironmentId = Climate | "unselected";
 
-export type EnvironmentId = Climate | "unselected"
-  
-
-export type EnvironmentResponse = {
+/**
+ * The static physical profile of an environment.
+ * Defines the core identity before it is mixed with live narrative state.
+ */
+export type EnvironmentProfile = {
   id: EnvironmentId;
   label: string;
   resonance: EnvironmentResonance;
   pressure: 0 | 1 | 2 | 3 | 4 | 5; // enforces strict levels
+};
+
+/**
+ * The fully derived dynamic response.
+ * This is the strict contract consumed by `EnvironmentSurface` (World Engine).
+ */
+export type EnvironmentResponse = EnvironmentProfile & {
+  climate: Climate | null;
+  stage: EnvironmentStage;
+  // Exposes a continuous 0.0 to 1.0 float so the CSS engine can easily 
+  // interpolate haze, blur, and opacity without complex math.
+  continuousPressure: number; 
 };
 
 /**
@@ -30,6 +45,12 @@ export type EnvironmentResponse = {
 const environments = {
   unselected: {
     id: "unselected",
+    label: "Room",
+    resonance: "waiting",
+    pressure: 0,
+  },
+  neutral: {
+    id: "neutral",
     label: "Room",
     resonance: "waiting",
     pressure: 0,
@@ -64,7 +85,7 @@ const environments = {
     resonance: "sheltering",
     pressure: 5,
   },
-} as const satisfies Record<EnvironmentId, EnvironmentResponse>;
+} as const satisfies Record<EnvironmentId, EnvironmentProfile>;
 
 /**
  * The routing function.
@@ -72,10 +93,19 @@ const environments = {
  * to map things like "burnout" or "overthinking" -> "heavy_fog".
  */
 export function deriveEnvironment(state: EnvironmentState): EnvironmentResponse {
-  
   const activeClimate = state.climate ?? "unselected"; 
   
+  // 1. Fetch the static physics profile
   // Future many-to-one mapping logic will go here.
   // For now, it simply passes the climate through to find the environment.
-  return environments[activeClimate as EnvironmentId] || environments["unselected"];
+  const profile = environments[activeClimate as EnvironmentId] || environments["unselected"];
+
+  // 2. Mix with the dynamic execution state to fulfill the World Engine contract
+  return {
+    ...profile,
+    climate: state.climate,
+    stage: state.stage,
+    // Converts the strict integer constraint into a float map for CSS variables
+    continuousPressure: profile.pressure / 5, 
+  };
 }
