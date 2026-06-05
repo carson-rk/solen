@@ -1,5 +1,5 @@
-import RoomWorld from "@/worlds/room/RoomWorld";
+import RoomEnvironment from "@/worlds/room/RoomEnvironment";
 
-export default function HomePage() {
-  return <RoomWorld />;
+export default function Page() {
+  return <RoomEnvironment />;
 }

@@ -13,8 +13,11 @@ import {
   SettlingStage,
   type SettlingClimate,
 } from "@/systems/environment/stages/settling/SettlingStage";
+import { DeepeningStage } from "@/systems/environment/stages/deepening/DeepeningStage";
+import { LingeringStage } from "@/systems/environment/stages/lingering/LingeringStage";
+import { DriftingStage } from "@/systems/environment/stages/drifting/DriftingStage";
 
-export default function RoomWorld() {
+export default function RoomEnvironment() {
   const [stage, setStage] = useState<EnvironmentStage>("arrival");
   const [climate, setClimate] = useState<Climate>("neutral");
   const [hoverClimate, setHoverClimate] = useState<SettlingClimate | null>(null);
@@ -39,6 +42,20 @@ export default function RoomWorld() {
   const handleSkip = () => {
     setClimate("neutral");
     setHoverClimate(null);
+    setStage("deepening");
+  };
+
+  const handleDeepeningComplete = () => {
+    setStage("lingering");
+  };
+
+  const handleLingeringComplete = () => {
+    setStage("drifting");
+  };
+
+  const handleDriftingComplete = () => {
+    setStage("arrival");
+    setClimate("neutral");
   };
 
   return (
@@ -64,6 +81,27 @@ export default function RoomWorld() {
               onClearPreviewClimate={() => setHoverClimate(null)}
               onSelectClimate={handleSelectClimate}
               onSkip={handleSkip}
+            />
+          )}
+
+          {stage === "deepening" && (
+            <DeepeningStage 
+              resetKey={stage}
+              onContinue={handleDeepeningComplete}
+            />
+          )}
+
+          {stage === "lingering" && (
+            <LingeringStage 
+              resetKey={stage}
+              onContinue={handleLingeringComplete}
+            />
+          )}
+
+          {stage === "drifting" && (
+            <DriftingStage 
+              resetKey={stage}
+              onContinue={handleDriftingComplete}
             />
           )}
         </RoomFrame>

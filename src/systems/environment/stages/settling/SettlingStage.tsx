@@ -44,15 +44,15 @@ export function SettlingStage({
 
   return (
     <AtmosphericStack className="settling-stage">
-      <EnvironmentReveal phase={reveal.getPhase("settling-title")}>
-        <h1 className="heading settling-title">what does the room feel like?</h1>
-      </EnvironmentReveal>
-
       <EnvironmentReveal
         className="settling-support-wrap"
         phase={reveal.getPhase("settling-support")}
       >
-        <p className="settling-support">let the weather arrive softly.</p>
+        <p className="settling-support">what&apos;s the weather like inside?</p>
+      </EnvironmentReveal>
+
+      <EnvironmentReveal phase={reveal.getPhase("settling-title")}>
+        <h1 className="heading settling-title">you do not need to explain it.</h1>
       </EnvironmentReveal>
 
       <EnvironmentReveal
@@ -96,7 +96,7 @@ export function SettlingStage({
         phase={reveal.getPhase("settling-skip")}
       >
         <Button intent="withdraw" size="lg" onClick={onSkip}>
-          Skip
+          Continue
         </Button>
       </EnvironmentReveal>
     </AtmosphericStack>
