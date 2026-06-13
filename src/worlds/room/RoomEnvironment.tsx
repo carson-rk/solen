@@ -2,17 +2,14 @@
 
 import { useState } from "react";
 
-import type { Climate } from "@/domain/climate";
+import type { Climate, SettlingClimate } from "@/domain/climate";
 import type { EnvironmentStage } from "@/domain/environmentalPresence";
 import { EnvironmentSurface } from "@/systems/environment/EnvironmentSurface";
 import { useEnvironment } from "@/features/environment/hooks/useEnvironment";
 import { Container } from "@/components/layout/Container";
 import { RoomFrame } from "@/components/layout/environmental/RoomFrame";
 import { ArrivalStage } from "@/systems/environment/stages/arrival/ArrivalStage";
-import {
-  SettlingStage,
-  type SettlingClimate,
-} from "@/systems/environment/stages/settling/SettlingStage";
+import { SettlingStage } from "@/systems/environment/stages/settling/SettlingStage";
 import { DeepeningStage } from "@/systems/environment/stages/deepening/DeepeningStage";
 import { LingeringStage } from "@/systems/environment/stages/lingering/LingeringStage";
 import { DriftingStage } from "@/systems/environment/stages/drifting/DriftingStage";

@@ -6,7 +6,7 @@ export default function AboutPage() {
       <Container>
         <h1>About Solen</h1>
         <p>
-          A calm space to understand emotional weather and find support that
+          A calm space to understand emotional weather and find presence that
           matches where you are — not where an app wants you to be.
         </p>
       </Container>

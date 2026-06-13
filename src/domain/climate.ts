@@ -16,6 +16,13 @@ export const climateIds = [
 
 export type Climate = (typeof climateIds)[number];
 
+/** Climates selectable during Settling (excludes neutral baseline). */
+export const settlingClimateIds = climateIds.filter(
+  (id): id is Exclude<Climate, "neutral"> => id !== "neutral"
+);
+
+export type SettlingClimate = (typeof settlingClimateIds)[number];
+
 export type AtmosphericDepth = 0 |1 | 2 | 3 | 4 | 5;
 
 export type InteractionProfile = {

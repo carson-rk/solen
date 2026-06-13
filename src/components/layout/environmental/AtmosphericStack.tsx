@@ -8,7 +8,7 @@ type AtmosphericStackProps = {
 
 export function AtmosphericStack({ children, className }: AtmosphericStackProps) {
   return (
-    <div className={cn("mx-auto flex w-full max-w-3xl flex-col", className)}>
+    <div className={cn("mx-auto flex w-full max-w-3xl flex-col px-[clamp(1rem,4vw,1.5rem)]", className)}>
       {children}
     </div>
   );

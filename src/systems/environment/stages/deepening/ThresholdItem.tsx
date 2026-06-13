@@ -29,7 +29,7 @@ export const ThresholdItem = React.forwardRef<HTMLButtonElement, ThresholdItemPr
             "text-sm tracking-wide transition-colors duration-700",
             isSelected
               ? "text-[hsl(var(--text-primary))]"
-              : "text-[hsl(var(--text-secondary))] group-hover:text-[hsl(var(--text-primary))]"
+              : "text-[hsl(var(--text-secondary))] group-hover:text-[hsl(var(--action-proceed))]"
           )}
         >
           {label}

@@ -1,23 +1,21 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Cormorant_Garamond, Epilogue } from "next/font/google";
 import "@/styles/globals.css";
 
-import Navbar from "@/components/shared/Navbar";
-import Footer from "@/components/shared/Footer";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const epilogue = Epilogue({
+  variable: "--font-epilogue",
   subsets: ["latin"],
 });
 
 export const metadata = {
-  title: "Solen - Emotional Environment Support",
+  title: "Solen — Emotional Environment",
   description:
-    "A private atmospheric room for arrival, settling, and emotionally ambiguous support.",
+    "A private atmospheric environment for arrival, settling, and quiet presence.",
 };
 
 export default function RootLayout({
@@ -28,14 +26,12 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${cormorant.variable} ${epilogue.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
-        <Navbar />
+      <body className="h-screen overflow-hidden">
 
         {children}
 
-        <Footer />
       </body>
     </html>
   );

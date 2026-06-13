@@ -1,3 +1,5 @@
+"use client";
+
 import { createContext, useContext, type ReactNode } from "react";
 import type { EnvironmentState } from "./environmentState";
 import { climateConfigs } from "@/domain/climate";

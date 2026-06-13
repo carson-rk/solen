@@ -9,7 +9,7 @@ import { usePacedReveal } from "@/systems/pacing/usePacedReveal";
 
 type ArrivalStageProps = {
   resetKey: string;
-  onContinue: () => void; // State mutation is passed down from the Orchestrator
+  onContinue: () => void;
 };
 
 export function ArrivalStage({ resetKey, onContinue }: ArrivalStageProps) {
@@ -19,52 +19,52 @@ export function ArrivalStage({ resetKey, onContinue }: ArrivalStageProps) {
   });
 
   return (
-    <AtmosphericStack>
-      <EnvironmentReveal phase={reveal.getPhase("arrival-signal")}>
-        <p className="text-sm uppercase text-[hsl(var(--text-ambient))]">
-          Solen
+    // Full screen wrapper to control positioning layers
+    <div className="relative">
+      
+      {/* WORDMARK (top-left, outside centered flow) */}
+      <div className="absolute top-4 left-4 z-20 sm:top-6 sm:left-6">
+        <p className="text-sm text-[hsl(var(--text-ambient))] tracking-wide">
+          solen
         </p>
-      </EnvironmentReveal>
+      </div>
 
-      <EnvironmentReveal
-        className="mt-6"
-        phase={reveal.getPhase("arrival-title")}
-      >
-        <h1 className="heading">you&apos;re here.</h1>
-      </EnvironmentReveal>
+      {/* CENTERED CONTENT LAYER */}
+      <div className="flex min-h-screen items-center justify-center">
+        <AtmosphericStack>
 
-      <EnvironmentReveal
-        className="mt-5"
-        phase={reveal.getPhase("arrival-copy")}
-      >
-        <p className="max-w-xl text-base leading-7 text-[hsl(var(--text-secondary))] sm:text-lg">
-          that is enough for now.
-        </p>
-      </EnvironmentReveal>
-
-      <EnvironmentReveal
-        className="mt-9"
-        phase={reveal.getPhase("arrival-actions")}
-      >
-        {/* Added flex container to prevent actions from collapsing together */}
-        <div className="flex items-center gap-4">
-          <Button 
-            intent="proceed" 
-            size="lg" 
-            onClick={onContinue}
+          <EnvironmentReveal
+            className="text-center"
+            phase={reveal.getPhase("arrival-title")}
           >
-            Continue
-          </Button>
+            <h1 className="heading">you&apos;re here.</h1>
+          </EnvironmentReveal>
 
-          <Button 
-            asChild 
-            intent="withdraw" 
-            size="lg"
+          <EnvironmentReveal
+            phase={reveal.getPhase("arrival-copy")}
           >
-            <Link href="/about">Learn More</Link>
-          </Button>
-        </div>
-      </EnvironmentReveal>
-    </AtmosphericStack>
+            <p className="text-center leading-7 text-[hsl(var(--text-secondary))]">
+              that is enough for now.
+            </p>
+          </EnvironmentReveal>
+
+          <EnvironmentReveal
+            className="mt-9"
+            phase={reveal.getPhase("arrival-actions")}
+          >
+            <div className="flex flex-col items-center gap-2">
+              <Button intent="proceed" size="default" onClick={onContinue}>
+                continue
+              </Button>
+
+              <Button asChild intent="withdraw" size="default">
+                <Link href="/about">about solen</Link>
+              </Button>
+            </div>
+          </EnvironmentReveal>
+
+        </AtmosphericStack>
+      </div>
+    </div>
   );
 }

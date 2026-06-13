@@ -10,7 +10,7 @@ export function RoomFrame({ children, className }: RoomFrameProps) {
   return (
     <div 
       className={cn(
-        "flex min-h-[calc(100vh-9rem)] flex-col justify-center py-20", 
+        "flex flex-col justify-center py-5", 
         className
       )}
     >

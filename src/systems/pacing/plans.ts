@@ -4,7 +4,6 @@ export const arrivalPlan = {
   mode: "sequential",
   initialDelayMs: 250,
   steps: [
-    { id: "arrival-signal", delayMs: 0 },
     { id: "arrival-title", delayMs: 650 },
     { id: "arrival-copy", delayMs: 520 },
     { id: "arrival-actions", delayMs: 520 },
@@ -16,7 +15,7 @@ export const settlingPlan = {
   initialDelayMs: 180,
   steps: [
     { id: "settling-title", delayMs: 0 },
-    { id: "settling-support", delayMs: 420 },
+    { id: "settling-prompt", delayMs: 420 },
     { id: "settling-orbs", delayMs: 420 },
     { id: "settling-skip", delayMs: 360 },
   ],
@@ -30,7 +29,6 @@ export const deepeningPlan = {
     { id: "deepening-residue", delayMs: 800 },
     { id: "deepening-signal", delayMs: 600 },
     { id: "deepening-title", delayMs: 600 },
-    { id: "deepening-subtitle", delayMs: 400 },
     { id: "deepening-thresholds", delayMs: 800 },
     { id: "deepening-story", delayMs: 500 },
     { id: "deepening-resonance", delayMs: 500 },

@@ -42,7 +42,7 @@
       --typography-contrast: 1;
       --typography-presence: 0.9;
       --typography-spacing-shift: 0rem;
-      --settling-support-opacity: 0.78;
+      --settling-prompt-opacity: 0.78;
       --orb-rest-opacity: 0.72;
 
       /* Deepening stage specific */
@@ -86,7 +86,7 @@
   --typography-contrast: 1;
   --typography-presence: 0.9;
   --typography-spacing-shift: 0rem;
-  --settling-support-opacity: 0.78;
+  --settling-prompt-opacity: 0.78;
   --orb-rest-opacity: 0.72;
 }
 
@@ -102,7 +102,7 @@
   --typography-contrast: 1.04;
   --typography-presence: 0.96;
   --typography-spacing-shift: 0.05rem;
-  --settling-support-opacity: 0.82;
+  --settling-prompt-opacity: 0.82;
   --orb-rest-opacity: 0.78;
 }
 
@@ -118,7 +118,7 @@
   --typography-contrast: 0.98;
   --typography-presence: 0.86;
   --typography-spacing-shift: 0.12rem;
-  --settling-support-opacity: 0.74;
+  --settling-prompt-opacity: 0.74;
   --orb-rest-opacity: 0.76;
 }
 
@@ -134,7 +134,7 @@
   --typography-contrast: 0.92;
   --typography-presence: 0.78;
   --typography-spacing-shift: 0.22rem;
-  --settling-support-opacity: 0.66;
+  --settling-prompt-opacity: 0.66;
   --orb-rest-opacity: 0.82;
 }
 
@@ -150,7 +150,7 @@
   --typography-contrast: 1.02;
   --typography-presence: 0.88;
   --typography-spacing-shift: 0.08rem;
-  --settling-support-opacity: 0.76;
+  --settling-prompt-opacity: 0.76;
   --orb-rest-opacity: 0.8;
 }
 
@@ -166,7 +166,7 @@
   --typography-contrast: 1.08;
   --typography-presence: 0.84;
   --typography-spacing-shift: 0.16rem;
-  --settling-support-opacity: 0.72;
+  --settling-prompt-opacity: 0.72;
   --orb-rest-opacity: 0.86;
 }
 
@@ -216,9 +216,6 @@
     background-size var(--atmosphere-transition-duration) ease;
 }
 
-.settling-stage {
-  gap: calc(1.25rem + var(--typography-spacing-shift));
-}
 
 .settling-title {
   filter: contrast(var(--typography-contrast));
@@ -228,18 +225,11 @@
     opacity var(--atmosphere-transition-duration) ease;
 }
 
-.settling-support-wrap,
-.settling-orbs-wrap,
-.settling-skip-wrap {
-  margin-top: 0;
-}
 
-.settling-support {
-  max-width: 34rem;
+.settling-prompt {
   color: hsl(var(--text-secondary));
-  font-size: 1rem;
-  line-height: 1.75;
-  opacity: var(--settling-support-opacity);
+
+  opacity: var(--settling-prompt-opacity);
   transition:
     color var(--atmosphere-transition-duration) ease,
     opacity var(--atmosphere-transition-duration) ease;
@@ -248,15 +238,16 @@
 .settling-orb-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.25rem;
-  align-items: flex-start;
+  gap: clamp(0.75rem, 3vw, 1.25rem);
+  align-items: center;
+  justify-content: center;
   padding: 0;
   margin: 0;
   list-style: none;
 }
 
 .climate-orb {
-  --orb-size: 4.75rem;
+  --orb-size: clamp(3.5rem, 12vw, 4.75rem);
   --orb-accent-opacity: 0.38;
   --orb-edge-opacity: 0.12;
   --orb-inner-opacity: 0.92;
@@ -264,7 +255,7 @@
   --orb-hover-scale: 1.04;
 
   display: inline-flex;
-  min-width: 5.5rem;
+  min-width: clamp(4rem, 18vw, 5.5rem);
   flex-direction: column;
   align-items: center;
   gap: 0.75rem;
@@ -507,7 +498,7 @@
   .world-canopy,
   .atmosphere-layer,
   .settling-title,
-  .settling-support,
+  .settling-prompt,
   .climate-orb,
   .climate-orb__core,
   .deepening-silence,
